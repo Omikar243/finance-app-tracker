@@ -1,20 +1,43 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Finance App Tracker
 
-# Run and deploy your AI Studio app
+## Description
+The Finance App Tracker is a powerful and intuitive application designed to help users manage their finances effortlessly. This app provides a straightforward way to track expenses, set budgets, and monitor financial goals, making it an essential tool for anyone looking to improve their financial literacy and discipline.
 
-This contains everything you need to run your app locally.
+## Features
+- **Expense Tracking**: Easily log and categorize expenses to see where your money goes.
+- **Budgeting Tools**: Set budgets for various categories and receive alerts when approaching your limits.
+- **Reports**: Generate visual reports to analyze spending habits and trends.
+- **User-Friendly Interface**: A clean and easy-to-navigate interface suitable for all users.
+- **Multi-Currency Support**: Supports various currencies for international users.
+- **Data Security**: Your financial data is stored securely and confidentially.
 
-View your app in AI Studio: https://ai.studio/apps/3de990e5-e548-4e34-89c1-4ed4b88ca857
+## Installation
+To install the Finance App Tracker, follow these steps:
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Omikars243/finance-app-tracker.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd finance-app-tracker
+   ```
+3. Install the required dependencies:
+   ```bash
+   npm install
+   ```
+4. Run the application:
+   ```bash
+   npm start
+   ```
 
-## Run Locally
+## Usage Instructions
+1. **Create an Account**: Start by creating an account and logging in.
+2. **Track Expenses**: Add expenses by selecting the category, entering the amount, and adding any notes.
+3. **Set Budgets**: Go to the budgeting section to set limits for different categories.
+4. **Review Reports**: Use the reports section to view your spending trends and make informed financial decisions.
 
-**Prerequisites:**  Node.js
+## Contribution
+Contributions are welcome! Feel free to submit a pull request or open an issue for any suggestions or improvements.
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
