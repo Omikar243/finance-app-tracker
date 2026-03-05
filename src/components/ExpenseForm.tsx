@@ -11,13 +11,38 @@ export function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
   const [category, setCategory] = useState<Category>('Food');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [description, setDescription] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!amount || isNaN(Number(amount))) return;
+    setError(null);
+
+    const numAmount = Number(amount);
+    if (!amount || isNaN(numAmount)) {
+      setError('Please enter a valid amount.');
+      return;
+    }
     
+    if (numAmount <= 0) {
+      setError('Amount must be greater than zero.');
+      return;
+    }
+
+    // Validate decimal precision (max 2 decimal places)
+    if (!/^\d+(\.\d{1,2})?$/.test(amount)) {
+      setError('Amount cannot have more than 2 decimal places.');
+      return;
+    }
+
+    const selectedDate = new Date(date);
+    const today = new Date();
+    if (selectedDate > today) {
+      setError('Date cannot be in the future.');
+      return;
+    }
+
     onAddExpense({
-      amount: Number(amount),
+      amount: numAmount,
       category,
       date,
       description
@@ -30,12 +55,17 @@ export function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
   return (
     <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
       <h3 className="text-lg font-medium text-gray-900 mb-4">Add Expense</h3>
+      {error && (
+        <div className="mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-xl border border-red-100">
+          {error}
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Amount</label>
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <span className="text-gray-500 sm:text-sm">$</span>
+              <span className="text-gray-500 sm:text-sm">₹</span>
             </div>
             <input
               type="number"

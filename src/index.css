@@ -4,3 +4,88 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
 }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #ffffff; /* Full white */
+}
+
+/* 3D High Tech Finance Styles */
+.card-3d {
+  background: #ffffff;
+  color: #1f2937;
+  border-radius: 24px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.dark .card-3d {
+  background: #1e293b;
+  color: #f8fafc;
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); /* Glow */
+  border: 1px solid rgba(59, 130, 246, 0.5);
+}
+
+/* Color Blind Modes */
+.protanopia { filter: url(#protanopia-filter); }
+.deuteranopia { filter: url(#deuteranopia-filter); }
+.tritanopia { filter: url(#tritanopia-filter); }
+
+/* Base Dark Mode Overrides */
+.dark body {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+.dark .bg-white {
+  background-color: #1e293b;
+}
+
+.dark .text-gray-900 {
+  color: #f8fafc;
+}
+
+.dark .text-gray-700 {
+  color: #cbd5e1;
+}
+
+.dark .text-gray-500 {
+  color: #94a3b8;
+}
+
+.dark .bg-gray-50 {
+  background-color: #0f172a;
+}
+
+.dark .border-gray-100, .dark .border-gray-200, .dark .border-gray-300 {
+  border-color: #334155;
+}
+
+.dark input, .dark select {
+  background-color: #0f172a;
+  color: #f8fafc;
+  border-color: #334155;
+}
+
+.dark header {
+  background-color: #1e293b;
+  border-bottom-color: #334155;
+}
+
+.dark nav {
+  background-color: #0f172a;
+}
+
+.dark nav button.bg-white {
+  background-color: #334155;
+  color: #60a5fa;
+}
+
+.dark nav button.text-gray-600 {
+  color: #94a3b8;
+}
+
+.dark nav button.text-gray-600:hover {
+  color: #f8fafc;
+}

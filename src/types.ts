@@ -8,6 +8,8 @@ export type Category =
   | 'Savings' 
   | 'Personal' 
   | 'Entertainment' 
+  | 'Salary'
+  | 'P2P Transfer'
   | 'Other';
 
 export const CATEGORIES: Category[] = [
@@ -20,8 +22,12 @@ export const CATEGORIES: Category[] = [
   'Savings',
   'Personal',
   'Entertainment',
+  'Salary',
+  'P2P Transfer',
   'Other'
 ];
+
+export type Sustainability = 'Low GHG' | 'Medium GHG' | 'High GHG' | 'N/A';
 
 export interface Expense {
   id: string;
@@ -29,6 +35,10 @@ export interface Expense {
   category: Category;
   date: string; // ISO string
   description: string;
+  sustainability?: Sustainability;
+  type?: 'income' | 'expense';
+  sourceFile?: string;
+  timestamp?: number;
 }
 
 export interface Budget {

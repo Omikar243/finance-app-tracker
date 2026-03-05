@@ -28,8 +28,8 @@ export function AIAdvisor({ expenses, budget }: AIAdvisorProps) {
 
       const prompt = `
         Act as a professional and encouraging financial advisor. Analyze my current financial situation based on the following data:
-        - Monthly Budget Goal: $${budget.total}
-        - Total Expenses Recorded: $${totalExpenses}
+        - Monthly Budget Goal: ₹${budget.total}
+        - Total Expenses Recorded: ₹${totalExpenses}
         - Expenses by Category: ${JSON.stringify(expensesByCategory)}
         
         Please provide:
