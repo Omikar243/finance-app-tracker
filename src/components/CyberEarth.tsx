@@ -52,47 +52,30 @@ function FallingCurrency({ position, speed, symbol }: { position: [number, numbe
 }
 
 function GlowHalo({ hovered }: { hovered: boolean }) {
-  const [texture, setTexture] = useState<THREE.CanvasTexture | null>(null);
-
-  useEffect(() => {
-    if (typeof document === 'undefined') return;
-
+  const texture = useMemo(() => {
     const canvas = document.createElement('canvas');
-    canvas.width = 256;
-    canvas.height = 256;
+    canvas.width = 128;
+    canvas.height = 128;
     const ctx = canvas.getContext('2d');
     if (ctx) {
-      const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
-      gradient.addColorStop(0, 'rgba(0, 200, 255, 0.7)');
-      gradient.addColorStop(0.5, 'rgba(0, 120, 255, 0.3)');
+      const gradient = ctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      gradient.addColorStop(0, 'rgba(0, 136, 255, 0.4)');
       gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, 256, 256);
+      ctx.fillRect(0, 0, 128, 128);
     }
-    const tex = new THREE.CanvasTexture(canvas);
-    setTexture(tex);
-
-    return () => {
-      tex.dispose();
-    };
+    return new THREE.CanvasTexture(canvas);
   }, []);
 
-  const scale = hovered ? 10 : 8;
+  const scale = hovered ? 9 : 7;
 
   return (
-    texture && (
-      <Billboard position={[0, 0, -1]}>
-        <mesh>
-          <planeGeometry args={[scale, scale]} />
-          <meshBasicMaterial
-            map={texture}
-            transparent
-            opacity={hovered ? 0.9 : 0.6}
-            depthWrite={false}
-          />
-        </mesh>
-      </Billboard>
-    )
+    <Billboard position={[0, 0, -1]}>
+      <mesh>
+        <planeGeometry args={[scale, scale]} />
+        <meshBasicMaterial map={texture} transparent opacity={hovered ? 0.8 : 0.5} depthWrite={false} />
+      </mesh>
+    </Billboard>
   );
 }
 
@@ -125,7 +108,7 @@ function EquatorRing({ hovered }: { hovered: boolean }) {
     <points ref={ref}>
       <bufferGeometry>
         <bufferAttribute
-          attach="attributes.position"
+          attach="attributes-position"
           count={count}
           array={points}
           itemSize={3}
@@ -168,18 +151,8 @@ function Earth() {
     <group 
       ref={groupRef} 
       position={[0, 0, 0]}
-      onPointerOver={() => {
-        if (typeof document !== 'undefined') {
-          document.body.style.cursor = 'pointer';
-        }
-        setHovered(true);
-      }}
-      onPointerOut={() => {
-        if (typeof document !== 'undefined') {
-          document.body.style.cursor = 'auto';
-        }
-        setHovered(false);
-      }}
+      onPointerOver={() => { document.body.style.cursor = 'pointer'; setHovered(true); }}
+      onPointerOut={() => { document.body.style.cursor = 'auto'; setHovered(false); }}
     >
       <GlowHalo hovered={hovered} />
       <EquatorRing hovered={hovered} />
@@ -239,8 +212,8 @@ function MatrixRain() {
 
 export function CyberEarth() {
   return (
-    <div className="fixed inset-0 z-0 pointer-events-none">
-      <Canvas camera={{ position: [0, 0, 8] }} style={{ pointerEvents: 'none' }}>
+    <div className="fixed inset-0 -z-10 bg-black">
+      <Canvas camera={{ position: [0, 0, 8] }}>
         <Debug />
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.5} />
