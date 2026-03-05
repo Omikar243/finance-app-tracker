@@ -121,18 +121,23 @@ export function ExpenseList({ expenses, onDelete, onClearAll, categoryIcons, onU
                   </div>
                   <div>
                     <p className="text-sm font-medium text-gray-900">{expense.description}</p>
-                    <div className="flex items-center text-xs text-gray-500 mt-1 space-x-2">
-                      <span>{expense.category}</span>
-                      <span>&bull;</span>
-                      <span>{format(new Date(expense.date), 'MMM d, yyyy')}</span>
+                    <div className="flex flex-wrap items-center gap-y-1 gap-x-2 mt-1">
+                      <span className="text-xs text-gray-500">{expense.category}</span>
+                      <span className="text-xs text-gray-300">&bull;</span>
+                      <span className="text-xs text-gray-500">{format(new Date(expense.date), 'MMM d, yyyy')}</span>
+                      
+                      {expense.location && (
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600 border border-gray-200" title={`Location: ${expense.location}`}>
+                          <Icons.MapPin className="w-3 h-3 mr-1" />
+                          {expense.location}
+                        </span>
+                      )}
+
                       {expense.sustainability && expense.sustainability !== 'N/A' && (
-                        <>
-                          <span>&bull;</span>
-                          <span className="flex items-center" title={`Sustainability: ${expense.sustainability}`}>
-                            {getSustainabilityIcon(expense.sustainability)}
-                            {expense.sustainability}
-                          </span>
-                        </>
+                        <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-medium bg-gray-50 text-gray-600 border border-gray-100" title={`Sustainability: ${expense.sustainability}`}>
+                          {getSustainabilityIcon(expense.sustainability)}
+                          {expense.sustainability}
+                        </span>
                       )}
                     </div>
                   </div>

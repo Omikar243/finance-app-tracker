@@ -11,6 +11,7 @@ export function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
   const [category, setCategory] = useState<Category>('Food');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
   const [description, setDescription] = useState('');
+  const [location, setLocation] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -45,11 +46,13 @@ export function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
       amount: numAmount,
       category,
       date,
-      description
+      description,
+      location: location.trim() || undefined
     });
 
     setAmount('');
     setDescription('');
+    setLocation('');
   };
 
   return (
@@ -91,6 +94,17 @@ export function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
               <option key={c} value={c}>{c}</option>
             ))}
           </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Location (Optional)</label>
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="block w-full rounded-xl border-gray-300 bg-gray-50 border py-2 px-3 text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm outline-none transition-all"
+            placeholder="Where was this?"
+          />
         </div>
 
         <div>

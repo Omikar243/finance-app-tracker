@@ -118,7 +118,11 @@ export function StatementUploader({ expenses, onUploadSuccess, onDeleteSourceFil
           - description: string
           - category: one of ['Housing', 'Food', 'Transportation', 'Utilities', 'Insurance', 'Medical', 'Savings', 'Personal', 'Entertainment', 'Salary', 'P2P Transfer', 'Other']
           - type: 'income' or 'expense'
-          - sustainability: 'Low GHG', 'Medium GHG', 'High GHG', or 'N/A'. Evaluate the greenhouse gas (GHG) carbon emissions associated with the purchase. Use 'N/A' for Salary and P2P Transfers.`
+          - sustainability: 'Low GHG', 'Medium GHG', 'High GHG', or 'N/A'. Evaluate the greenhouse gas (GHG) carbon emissions associated with the purchase. Use 'N/A' for Salary and P2P Transfers.
+          - location: Extract the location (city, state, country, or specific store location) from the description. 
+            CRITICAL: If the location is not explicitly stated, INFER it from the merchant name or context if possible (e.g., "Starbucks Seattle" -> "Seattle", "Uber" -> "Ride Share", "Walmart #1234" -> "Walmart Store"). 
+            If it is a well-known online service (e.g., "Netflix", "Spotify", "Amazon"), set location to "Online".
+            If absolutely no location can be inferred, return null or empty string.`
         });
 
         const response = await ai.models.generateContent({
@@ -136,7 +140,8 @@ export function StatementUploader({ expenses, onUploadSuccess, onDeleteSourceFil
                   description: { type: Type.STRING },
                   category: { type: Type.STRING },
                   type: { type: Type.STRING },
-                  sustainability: { type: Type.STRING }
+                  sustainability: { type: Type.STRING },
+                  location: { type: Type.STRING }
                 },
                 required: ["amount", "date", "description", "category", "type", "sustainability"]
               }

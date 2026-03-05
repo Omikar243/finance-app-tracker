@@ -39,6 +39,7 @@ export interface Expense {
   type?: 'income' | 'expense';
   sourceFile?: string;
   timestamp?: number;
+  location?: string;
 }
 
 export interface Budget {
