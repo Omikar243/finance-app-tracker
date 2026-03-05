@@ -1,7 +1,6 @@
 import React from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip as RechartsTooltip, Legend } from 'recharts';
 import { Expense, Budget } from '../types';
-import { CyberEarth } from './CyberEarth';
 
 interface DashboardProps {
   expenses: Expense[];
@@ -30,13 +29,6 @@ export function Dashboard({ expenses, budget }: DashboardProps) {
 
   return (
     <div className="space-y-6">
-      {/* visual globe panel with interactive CyberEarth */}
-      <div className="card-3d p-6 relative h-64 overflow-hidden">
-        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Overview Globe</h3>
-        <div className="absolute inset-0">
-          <CyberEarth />
-        </div>
-      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <div className="card-3d p-6">
           <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total Budget</h3>

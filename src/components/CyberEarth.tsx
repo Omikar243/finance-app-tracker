@@ -118,7 +118,9 @@ function EquatorRing({ hovered }: { hovered: boolean }) {
   });
 
   return (
-    <points ref={ref}>
+    // the dust ring is purely decorative, disable pointer events so it never
+    // participates in raycasting.
+    <points ref={ref} pointerEvents="none">
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
@@ -135,11 +137,14 @@ function EquatorRing({ hovered }: { hovered: boolean }) {
         opacity={hovered ? 0.8 : 0.4}
 =======
         size={0.08}
-        // stronger base color so it stands out from the globe even when not hovered
-        color={hovered ? "#00ffff" : "#00aaff"}
+        color={hovered ? "#00ffff" : "#0088ff"}
         transparent
+<<<<<<< HEAD
         opacity={hovered ? 0.9 : 0.6}
 >>>>>>> fbb42bc (Embed CyberEarth in dashboard card; improve ring visibility and interaction)
+=======
+        opacity={hovered ? 0.9 : 0.5}
+>>>>>>> 3c36aed (Fix pointer-events so Overview nav works with CyberEarth and add comments)
         sizeAttenuation
       />
     </points>
@@ -220,6 +225,7 @@ function CurrencyRing({ hovered }: { hovered: boolean }) {
             0,
             Math.sin((i / count) * Math.PI * 2) * 3.5,
           ]}
+          pointerEvents="none"
         >
           {sym}
         </Text>
@@ -351,6 +357,8 @@ function MatrixRain() {
   return (
     <>
       {items.map((item, i) => (
+        // falling currencies already handle their own events; everything else
+        // should ignore pointer interactions
         <FallingCurrency key={i} {...item} />
       ))}
     </>
@@ -359,6 +367,11 @@ function MatrixRain() {
 
 export function CyberEarth() {
   return (
+    // make the full‑screen background completely transparent to pointer events so
+    // nothing in the 3D scene can steal touches/hovers from the app UI. the
+    // <Canvas> itself restores events for the areas that are not covered by the
+    // header/main content, which lets users still interact with the globe when
+    // they click on empty space.
     <div className="absolute inset-0 z-0 pointer-events-none">
       <Canvas className="w-full h-full pointer-events-auto" camera={{ position: [0, 0, 8] }}>
         <Debug />
@@ -377,6 +390,8 @@ export function CyberEarth() {
             autoRotateSpeed={0.5}
             makeDefault
           />
+      {/* NOTE: the canvas itself is pointer‑event enabled only where it isn't
+          covered by higher‑z elements; the surrounding div blocks nothing. */}
         </Suspense>
       </Canvas>
     </div>
