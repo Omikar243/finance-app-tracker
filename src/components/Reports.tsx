@@ -109,8 +109,6 @@ export function Reports({ expenses }: ReportsProps) {
                   type="date"
                   value={customStart}
                   onChange={(e) => setCustomStart(e.target.value)}
-                  placeholder="Start date"
-                  aria-label="Start date"
                   className="rounded-xl border-gray-300 bg-gray-50 border py-2 px-3 text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                 />
                 <span className="text-gray-500">to</span>
@@ -118,8 +116,6 @@ export function Reports({ expenses }: ReportsProps) {
                   type="date"
                   value={customEnd}
                   onChange={(e) => setCustomEnd(e.target.value)}
-                  placeholder="End date"
-                  aria-label="End date"
                   className="rounded-xl border-gray-300 bg-gray-50 border py-2 px-3 text-sm text-gray-900 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
                 />
               </div>
