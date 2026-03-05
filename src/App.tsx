@@ -13,6 +13,7 @@ import { Reports } from './components/Reports';
 import { AIAdvisor } from './components/AIAdvisor';
 import { StatementUploader } from './components/StatementUploader';
 import { CyberEarth } from './components/CyberEarth';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { Wallet, LayoutDashboard, PieChart as PieChartIcon, Sparkles, UploadCloud, Moon, Sun, Eye } from 'lucide-react';
 
 export default function App() {
@@ -38,7 +39,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-transparent text-gray-900 dark:text-gray-100 font-sans transition-colors duration-300 relative">
-      {isDarkMode && <CyberEarth />}
+      <ErrorBoundary fallback={<div className="fixed inset-0 -z-10 bg-slate-900" />}>
+        {isDarkMode && <CyberEarth />}
+      </ErrorBoundary>
       <header className="bg-white dark:bg-slate-800/80 backdrop-blur-sm border-b border-gray-200 dark:border-slate-700 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-3">
