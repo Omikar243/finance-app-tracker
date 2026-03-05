@@ -80,15 +80,28 @@ function GlowHalo({ hovered }: { hovered: boolean }) {
 }
 
 function EquatorRing({ hovered }: { hovered: boolean }) {
+<<<<<<< HEAD
   const count = 600; // Increased count for denser dust
+=======
+  // denser dust ring with wider spread
+  const count = 600;
+>>>>>>> fbb42bc (Embed CyberEarth in dashboard card; improve ring visibility and interaction)
   const points = useMemo(() => {
     const p = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * Math.PI * 2;
+<<<<<<< HEAD
       const radius = 3.2 + Math.random() * 1.2; // Wider spread
       const x = Math.cos(angle) * radius;
       const z = Math.sin(angle) * radius;
       const y = (Math.random() - 0.5) * 0.8; // More vertical spread
+=======
+      // wider radial variance for more substantial look
+      const radius = 3.0 + Math.random() * 1.5;
+      const x = Math.cos(angle) * radius;
+      const z = Math.sin(angle) * radius;
+      const y = (Math.random() - 0.5) * 0.6;
+>>>>>>> fbb42bc (Embed CyberEarth in dashboard card; improve ring visibility and interaction)
       p[i * 3] = x;
       p[i * 3 + 1] = y;
       p[i * 3 + 2] = z;
@@ -115,10 +128,18 @@ function EquatorRing({ hovered }: { hovered: boolean }) {
         />
       </bufferGeometry>
       <pointsMaterial
+<<<<<<< HEAD
         size={0.06}
         color={hovered ? "#00ffff" : "#0088ff"}
         transparent
         opacity={hovered ? 0.8 : 0.4}
+=======
+        size={0.08}
+        // stronger base color so it stands out from the globe even when not hovered
+        color={hovered ? "#00ffff" : "#00aaff"}
+        transparent
+        opacity={hovered ? 0.9 : 0.6}
+>>>>>>> fbb42bc (Embed CyberEarth in dashboard card; improve ring visibility and interaction)
         sizeAttenuation
       />
     </points>
@@ -126,6 +147,7 @@ function EquatorRing({ hovered }: { hovered: boolean }) {
 }
 
 function CurrencyRing({ hovered }: { hovered: boolean }) {
+<<<<<<< HEAD
   const ref = useRef<THREE.Group>(null);
   
   useFrame((state, delta) => {
@@ -163,6 +185,47 @@ function CurrencyRing({ hovered }: { hovered: boolean }) {
         </Text>
       ))}
     </group>
+=======
+  const count = 16;
+  const symbols = useMemo(() => {
+    return new Array(count).fill(0).map((_, i) => CURRENCIES[i % CURRENCIES.length]);
+  }, []);
+
+  const textRefs = useRef<Array<THREE.Mesh | null>>([]);
+
+  useFrame((state, delta) => {
+    const time = state.clock.getElapsedTime();
+    textRefs.current.forEach((ref, i) => {
+      if (ref) {
+        const angle = time * 0.8 + (i / count) * Math.PI * 2;
+        const radius = 3.5;
+        ref.position.x = Math.cos(angle) * radius;
+        ref.position.z = Math.sin(angle) * radius;
+      }
+    });
+  });
+
+  return (
+    <>
+      {symbols.map((sym, i) => (
+        <Text
+          key={i}
+          ref={el => (textRefs.current[i] = el)}
+          fontSize={hovered ? 0.6 : 0.5}
+          color={hovered ? "#ffff00" : "#ffdd00"}
+          anchorX="center"
+          anchorY="middle"
+          position={[
+            Math.cos((i / count) * Math.PI * 2) * 3.5,
+            0,
+            Math.sin((i / count) * Math.PI * 2) * 3.5,
+          ]}
+        >
+          {sym}
+        </Text>
+      ))}
+    </>
+>>>>>>> fbb42bc (Embed CyberEarth in dashboard card; improve ring visibility and interaction)
   );
 }
 
@@ -170,6 +233,30 @@ function Earth() {
   const groupRef = useRef<THREE.Group>(null);
   const distortRef = useRef<any>(null);
   const [hovered, setHovered] = useState(false);
+  const [dragging, setDragging] = useState(false);
+  const velocity = useRef(0);
+  const lastX = useRef<number | null>(null);
+
+  // pointer handlers for drag inertia
+  const onPointerDown = (e: THREE.Event) => {
+    setDragging(true);
+    lastX.current = (e as any).clientX;
+  };
+
+  const onPointerMove = (e: THREE.Event) => {
+    if (dragging && lastX.current !== null && groupRef.current) {
+      const x = (e as any).clientX;
+      const dx = x - lastX.current;
+      velocity.current = dx * 0.01; // scale down
+      groupRef.current.rotation.y += velocity.current;
+      lastX.current = x;
+    }
+  };
+
+  const onPointerUp = () => {
+    setDragging(false);
+    lastX.current = null;
+  };
 
   useFrame((state, delta) => {
     // Pulse animation logic
@@ -183,17 +270,35 @@ function Earth() {
       distortRef.current.emissiveIntensity = THREE.MathUtils.lerp(distortRef.current.emissiveIntensity, targetEmissive, delta * 8);
       distortRef.current.color.lerp(targetColor, delta * 8);
     }
-    
-    // Subtle rotation even when not auto-rotating (handled by OrbitControls usually, but this adds a layer)
-    // Actually, let OrbitControls handle the main rotation interaction.
+
+    // apply inertia when not dragging
+    if (!dragging && groupRef.current) {
+      // decay velocity
+      velocity.current *= 0.95;
+      groupRef.current.rotation.y += velocity.current * delta * 60;
+      if (Math.abs(velocity.current) < 0.0001) velocity.current = 0;
+    }
   });
 
   return (
     <group 
       ref={groupRef} 
       position={[0, 0, 0]}
-      onPointerOver={() => { document.body.style.cursor = 'pointer'; setHovered(true); }}
-      onPointerOut={() => { document.body.style.cursor = 'auto'; setHovered(false); }}
+      onPointerOver={() => {
+        if (typeof document !== 'undefined') {
+          document.body.style.cursor = 'pointer';
+        }
+        setHovered(true);
+      }}
+      onPointerOut={() => {
+        if (typeof document !== 'undefined') {
+          document.body.style.cursor = 'auto';
+        }
+        setHovered(false);
+      }}
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
     >
       <GlowHalo hovered={hovered} />
       <EquatorRing hovered={hovered} />
@@ -254,8 +359,8 @@ function MatrixRain() {
 
 export function CyberEarth() {
   return (
-    <div className="fixed inset-0 -z-10 bg-black">
-      <Canvas camera={{ position: [0, 0, 8] }}>
+    <div className="absolute inset-0 z-0 pointer-events-none">
+      <Canvas className="w-full h-full pointer-events-auto" camera={{ position: [0, 0, 8] }}>
         <Debug />
         <Suspense fallback={<Loader />}>
           <ambientLight intensity={0.5} />
