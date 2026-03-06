@@ -34,8 +34,9 @@ body {
 
 /* Base Dark Mode Overrides */
 .dark body {
-  background-color: #0f172a;
+  background-color: transparent;
   color: #f8fafc;
+  min-height: 100vh;
 }
 
 .dark .bg-white {
@@ -54,8 +55,9 @@ body {
   color: #94a3b8;
 }
 
+/* Removed conflicting .dark .bg-gray-50 rule to allow transparent background in App.tsx */
 .dark .bg-gray-50 {
-  background-color: #0f172a;
+  background-color: transparent;
 }
 
 .dark .border-gray-100, .dark .border-gray-200, .dark .border-gray-300 {

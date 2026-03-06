@@ -254,7 +254,7 @@ function MatrixRain() {
 
 export function CyberEarth() {
   return (
-    <div className="fixed inset-0 -z-10 bg-black">
+    <div className="fixed inset-0 z-0 bg-black pointer-events-auto">
       <Canvas camera={{ position: [0, 0, 8] }}>
         <Debug />
         <Suspense fallback={<Loader />}>
